@@ -1,12 +1,19 @@
-install:
-	python setup.py install
+init:
+	git submodule update --init --recursive
+	pip install pipenv
+	pipenv install --dev
 
-package:
-	python setup.py clean
-	python setup.py sdist
+style-check:
+	pipenv run flake8 --config code-quality/python/flake8 ntripbrowser --exclude=__init__.py
+
+lint:
+	pipenv run pylint --rcfile code-quality/python/pylintrc ntripbrowser
 
 test:
-	pytest -v
+	pipenv run pytest -v tests
+
+install:
+	pipenv run pip install -e .
 
 clean:
 	rm -rf build
